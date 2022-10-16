@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  backend:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile 
+    restart: always
+    volumes:
+      - ./backend/src:/home/node/src
+    ports:
+      - "3000:3000"
