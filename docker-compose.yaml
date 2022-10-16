@@ -1,11 +1,30 @@
 version: "3.7"
 services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./backend/create_tables:/docker-entrypoint-initdb.d/
+      - ./backend/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   backend:
     build:
       context: ./backend/
       dockerfile: Dockerfile 
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: postgres
     restart: always
     volumes:
       - ./backend/src:/home/node/src
     ports:
       - "3000:3000"
+ 

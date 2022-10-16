@@ -3,7 +3,7 @@ FROM node:16.6.1-alpine3.14
 WORKDIR /app
 
 COPY package*.json ./
-#COPY db.js ./
+COPY db.js ./
     
 
 RUN npm install
