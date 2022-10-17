@@ -1,6 +1,6 @@
 version: "3.7"
 services:
-  db:
+  postgres:
     image: postgres:14.1-alpine
     restart: always
     environment:
@@ -15,9 +15,9 @@ services:
       context: ./backend/
       dockerfile: Dockerfile 
     depends_on:
-      - db
+      - postgres
     environment:
-      DB_HOST: db
+      DB_HOST: postgres
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
@@ -27,4 +27,12 @@ services:
       - ./backend/src:/home/node/src
     ports:
       - "3000:3000"
- 
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
