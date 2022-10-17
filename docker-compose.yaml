@@ -33,6 +33,19 @@ services:
       PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
       PGADMIN_DEFAULT_PASSWORD: "admin"
     ports:
-      - "80:80"
+      - "4000:80"
     depends_on:
       - postgres
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile 
+    depends_on:
+      - postgres
+      - backend
+    restart: always
+    volumes:
+      - ./frontend/public:/home/node/public
+      - ./frontend/src:/home/node/src
+    ports:
+      - "8080:80"

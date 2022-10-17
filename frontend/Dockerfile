@@ -1,12 +1,14 @@
-FROM node:16.6.1-alpine3.14
-
+#REACT
+FROM node:12-alpine3.12 AS build
 WORKDIR /app
-
-COPY package*.json ./
-#COPY db.js ./
-    
-
+COPY package.json ./
 RUN npm install
-
 COPY . .
-CMD ["npm","start"]
+RUN npm run build 
+
+#NGINX
+FROM nginx:1.19.0-alpine AS prod_stage
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD [ "nginx", "-g", "daemon off;"]
+
